@@ -1,6 +1,7 @@
 "use strict";
 import { API_URL, RES_PER_PAGE } from "./config.js";
 import { getJSON } from "./helpers.js";
+import recipeView from "./views/recipeView.js";
 
 export const state = {
   recipe: {},
@@ -36,7 +37,6 @@ export const loadRecipe = async function (id) {
 export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
-    console.log(query);
     const data = await getJSON(`${API_URL}/?search=${query}`);
 
     state.search.results = data.data.recipes.map((recipe) => {
@@ -60,4 +60,14 @@ export const getSearchResultsPage = function (page = state.search.page) {
   const end = page * state.search.resultsPerPage; //9;
 
   return state.search.results.slice(start, end);
+};
+
+//
+
+export const updateServings = function (newServings) {
+  state.recipe.ingredients.forEach((ingr) => {
+    ingr.quantity = (ingr.quantity * newServings) / state.recipe.servings;
+    //newQt = oldQy*newServings/oldServings // 2*8/4 =4
+  });
+  state.recipe.servings = newServings;
 };
