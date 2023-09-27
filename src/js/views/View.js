@@ -23,8 +23,6 @@ export default class View {
 
     const curElements = Array.from(this._parentElement.querySelectorAll("*"));
 
-    console.log(curElements, newElements);
-
     //Updates changed TEXT (Virtual dom)
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
